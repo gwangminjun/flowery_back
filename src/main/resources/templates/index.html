@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>안녕하세요 벡엔드 서버입니다..!</div>
+    <div>현재 서버의 보유중인 꽃 목록입니다.</div>
+
+
+    <h1>Flower List</h1>
+    <ul>
+        <li th:each="flower : ${flowers}">
+            <span th:text="${flower.name}">Flower Name</span>
+        </li>
+    </ul>
+
+</body>
+</html>
