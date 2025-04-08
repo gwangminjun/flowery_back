@@ -4,20 +4,18 @@ import com.example.flowery_backend.Service.FlowerService;
 import com.example.flowery_backend.model.Flower;
 import com.example.flowery_backend.model.request.FlowerRequest;
 import com.example.flowery_backend.model.response.FlowerListResponse;
-import jakarta.annotation.PostConstruct;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.xml.bind.JAXBException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 
+@RequestMapping("/api")
 @Controller
 public class ApiController {
     private final FlowerService flowerService;
@@ -68,7 +66,6 @@ public class ApiController {
     }
 
 
-
     private ResponseEntity<FlowerListResponse> createResponse(List<Flower> flowers, String successMsg, String notFoundMsg) {
         if (!flowers.isEmpty()) {
             return ResponseEntity.ok(
@@ -82,16 +79,11 @@ public class ApiController {
     }
 
 
-
-
-
 //    @GetMapping("/getFlower")
 //    public ResponseEntity<Flower> getFlower(Long id) {
 //        Flower flower = flowerService.getFlowers()id);
 //        return ResponseEntity.ok(flower); // JSON 응답
 //    }
-
-
 
 
 }
