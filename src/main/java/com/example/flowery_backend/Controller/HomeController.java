@@ -18,7 +18,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) throws JAXBException {
-        flowerService.sync();
+        //flowerService.sync();
         model.addAttribute("flowers", flowerService.getFlowers()); // Add the flowers list to the model
         return "index";
     }
