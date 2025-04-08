@@ -1,16 +1,15 @@
 package com.example.flowery_backend.Controller;
 
+import com.example.flowery_backend.Service.FlowerHashtagService;
 import com.example.flowery_backend.Service.FlowerService;
-import com.example.flowery_backend.model.Flower;
+import com.example.flowery_backend.model.Entity.Flower;
+import com.example.flowery_backend.model.Entity.FlowerHashtag;
 import com.example.flowery_backend.model.request.FlowerRequest;
 import com.example.flowery_backend.model.response.FlowerListResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,11 +19,14 @@ import java.util.List;
 public class ApiController {
     private final FlowerService flowerService;
 
-    public ApiController(FlowerService flowerService) {
+    private final FlowerHashtagService flowerHashtagService;
+
+    public ApiController(FlowerService flowerService, FlowerHashtagService flowerHashtagService) {
+        this.flowerHashtagService = flowerHashtagService;
         this.flowerService = flowerService;
     }
 
-    @GetMapping("/getList")
+    @GetMapping("/getFlowerList")
     public ResponseEntity<FlowerListResponse> getList() {
         List<Flower> flowers = flowerService.getFlowers();
 
@@ -37,9 +39,16 @@ public class ApiController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/getFlowerHashtag")
+    @ResponseBody
+    public List<FlowerHashtag> getFlowerHashtag() {
+
+        return flowerHashtagService.getFlowerHashtag();
+    }
+
     @PostMapping("/getFlowerByNm")
     public ResponseEntity<FlowerListResponse> getFlowerByNm(@RequestBody FlowerRequest request) {
-        return createResponse(
+        return createFlowerResponse(
                 flowerService.getFlowerByNm(request.getFlowNm()),
                 "조회 성공",
                 "해당 이름의 꽃이 없습니다."
@@ -49,7 +58,7 @@ public class ApiController {
     @PostMapping("/getFlowerByMonth")
     public ResponseEntity<FlowerListResponse> getFlowerByMonth(@RequestBody FlowerRequest request) {
         System.out.println(">>> 받은 월: " + request.getFMonth());
-        return createResponse(
+        return createFlowerResponse(
                 flowerService.getFlowerByMonth(request.getFMonth()),
                 "조회 성공",
                 "해당 월의 꽃이 없습니다."
@@ -58,7 +67,7 @@ public class ApiController {
 
     @PostMapping("/getFlowerByDay")
     public ResponseEntity<FlowerListResponse> getFlowerByDay(@RequestBody FlowerRequest request) {
-        return createResponse(
+        return createFlowerResponse(
                 flowerService.getFlowerByDay(request.getFDay()),
                 "조회 성공",
                 "해당 일의 꽃이 없습니다."
@@ -66,7 +75,7 @@ public class ApiController {
     }
 
 
-    private ResponseEntity<FlowerListResponse> createResponse(List<Flower> flowers, String successMsg, String notFoundMsg) {
+    private ResponseEntity<FlowerListResponse> createFlowerResponse(List<Flower> flowers, String successMsg, String notFoundMsg) {
         if (!flowers.isEmpty()) {
             return ResponseEntity.ok(
                     new FlowerListResponse(successMsg, flowers.size(), flowers)
@@ -77,13 +86,5 @@ public class ApiController {
             );
         }
     }
-
-
-//    @GetMapping("/getFlower")
-//    public ResponseEntity<Flower> getFlower(Long id) {
-//        Flower flower = flowerService.getFlowers()id);
-//        return ResponseEntity.ok(flower); // JSON 응답
-//    }
-
 
 }

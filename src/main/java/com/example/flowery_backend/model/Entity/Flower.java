@@ -1,14 +1,12 @@
-package com.example.flowery_backend.model;
+package com.example.flowery_backend.model.Entity;
 
-import java.time.OffsetDateTime;
 import jakarta.persistence.*;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.xml.bind.annotation.XmlAccessorType;
+import java.time.OffsetDateTime;
 
 /**
  * 꽃 정보를 저장하는 엔터티 클래스입니다.
@@ -82,28 +80,4 @@ public class Flower {
 
     @Column(name = "f_season")
     private String fSeason;
-
-//    /**
-//     * fMonth 필드가 변경될 때 실행되는 메서드입니다.
-//     */
-//    @PrePersist
-//    @PreUpdate
-//    private void updateFlowerSeason() {
-//        if (fMonth != null) {
-//            try {
-//                int month = Integer.parseInt(fMonth);
-//                if (month >= 3 && month <= 5) {
-//                    fSeason = "봄";
-//                } else if (month >= 6 && month <= 8) {
-//                    fSeason = "여름";
-//                } else if (month >= 9 && month <= 11) {
-//                    fSeason = "가을";
-//                } else {
-//                    fSeason = "겨울";
-//                }
-//            } catch (NumberFormatException e) {
-//                // fMonth가 숫자 형식이 아닌 경우 fSeason을 변경하지 않음
-//            }
-//        }
-//    }
 }

@@ -1,6 +1,6 @@
 package com.example.flowery_backend.model.response;
 
-import com.example.flowery_backend.model.Flower;
+import com.example.flowery_backend.model.Entity.Flower;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
