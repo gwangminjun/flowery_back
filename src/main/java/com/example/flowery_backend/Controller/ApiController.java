@@ -2,10 +2,8 @@ package com.example.flowery_backend.Controller;
 
 import com.example.flowery_backend.Service.FlowerHashtagService;
 import com.example.flowery_backend.Service.FlowerService;
-import com.example.flowery_backend.model.Entity.Flower;
-import com.example.flowery_backend.model.Entity.FlowerHashtag;
 import com.example.flowery_backend.model.request.FlowerRequest;
-import com.example.flowery_backend.model.response.FlowerListResponse;
+import com.example.flowery_backend.model.response.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,28 +25,28 @@ public class ApiController {
     }
 
     @GetMapping("/getFlowerList")
-    public ResponseEntity<FlowerListResponse> getList() {
-        List<Flower> flowers = flowerService.getFlowers();
-
-        FlowerListResponse response = new FlowerListResponse(
-                "접속 성공",                   // resultMsg
-                flowers.size(),               // totalCount
-                flowers                      // flowers 리스트
+    public ResponseEntity<Response> getList() {
+        return createResponse(
+                flowerService.getFlowers(),
+                "조회 성공",
+                "꽃이 없습니다."
         );
-
-        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/getFlowerHashtag")
     @ResponseBody
-    public List<FlowerHashtag> getFlowerHashtag() {
+    public ResponseEntity<Response> getFlowerHashtag() {
 
-        return flowerHashtagService.getFlowerHashtag();
+        return createResponse(
+                flowerHashtagService.getFlowerHashtag(),
+                "조회 성공",
+                "해시태그가 없습니다."
+        );
     }
 
     @PostMapping("/getFlowerByNm")
-    public ResponseEntity<FlowerListResponse> getFlowerByNm(@RequestBody FlowerRequest request) {
-        return createFlowerResponse(
+    public ResponseEntity<Response> getFlowerByNm(@RequestBody FlowerRequest request) {
+        return createResponse(
                 flowerService.getFlowerByNm(request.getFlowNm()),
                 "조회 성공",
                 "해당 이름의 꽃이 없습니다."
@@ -56,9 +54,9 @@ public class ApiController {
     }
 
     @PostMapping("/getFlowerByMonth")
-    public ResponseEntity<FlowerListResponse> getFlowerByMonth(@RequestBody FlowerRequest request) {
+    public ResponseEntity<Response> getFlowerByMonth(@RequestBody FlowerRequest request) {
         System.out.println(">>> 받은 월: " + request.getFMonth());
-        return createFlowerResponse(
+        return createResponse(
                 flowerService.getFlowerByMonth(request.getFMonth()),
                 "조회 성공",
                 "해당 월의 꽃이 없습니다."
@@ -66,8 +64,8 @@ public class ApiController {
     }
 
     @PostMapping("/getFlowerByDay")
-    public ResponseEntity<FlowerListResponse> getFlowerByDay(@RequestBody FlowerRequest request) {
-        return createFlowerResponse(
+    public ResponseEntity<Response> getFlowerByDay(@RequestBody FlowerRequest request) {
+        return createResponse(
                 flowerService.getFlowerByDay(request.getFDay()),
                 "조회 성공",
                 "해당 일의 꽃이 없습니다."
@@ -75,14 +73,14 @@ public class ApiController {
     }
 
 
-    private ResponseEntity<FlowerListResponse> createFlowerResponse(List<Flower> flowers, String successMsg, String notFoundMsg) {
-        if (!flowers.isEmpty()) {
+    private <T> ResponseEntity<Response> createResponse(List<T> data, String successMsg, String notFoundMsg) {
+        if (!data.isEmpty()) {
             return ResponseEntity.ok(
-                    new FlowerListResponse(successMsg, flowers.size(), flowers)
+                    new Response<>(successMsg, data.size(), data)
             );
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new FlowerListResponse(notFoundMsg, 0, List.of())
+                    new Response<>(notFoundMsg, 0, List.of())
             );
         }
     }
