@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface FlowerJpaRepository extends JpaRepository<Flower, Long> {
 
+
     /**
      * 꽃 정보를 이름으로 조회하는 메서드입니다.
      *

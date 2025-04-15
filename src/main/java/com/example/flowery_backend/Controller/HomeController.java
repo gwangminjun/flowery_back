@@ -23,5 +23,11 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping("/map")
+    public String test(Model model) throws JAXBException {
+        model.addAttribute("apiKey", "8e4b7ef897334b13b8b3d473be01f42e"); // Add the flowers list to the model
+        return "map";
+    }
+
 
 }
