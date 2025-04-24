@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import javax.xml.bind.annotation.XmlElement;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 꽃 정보를 저장하는 엔터티 클래스입니다.
@@ -89,5 +91,8 @@ public class Flower {
     @XmlElement
     @Column(name = "f_day")
     private String fDay;
+
+    @OneToMany(mappedBy = "flower", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<FlowerHashtag> hashtags = new ArrayList<>();
 
 }

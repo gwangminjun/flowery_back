@@ -11,13 +11,14 @@ import java.util.List;
 @Repository
 public interface FlowerJpaRepository extends JpaRepository<Flower, Long> {
 
-
-    List<Flower> findByFlowNm(String flowNm);
-
-    List<Flower> findByfMonth(String fMonth);
-
-    List<Flower> findByfDay(String fDay);
-
+    /**
+     * 꽃 정보를 이름, 월, 일로 조회하는 메서드입니다.
+     *
+     * @param flowNm 꽃 이름
+     * @param fMonth 꽃 월
+     * @param fDay   꽃 일
+     * @return List<Flower> 꽃 정보
+     */
     @Query("""
                 SELECT f FROM Flower f
                 WHERE (:flowNm IS NULL OR f.flowNm = :flowNm)
@@ -29,5 +30,14 @@ public interface FlowerJpaRepository extends JpaRepository<Flower, Long> {
             @Param("fMonth") String fMonth,
             @Param("fDay") String fDay
     );
+
+    /**
+     * 해시태그로 꽃 정보를 조회하는 메서드입니다.
+     *
+     * @param tagName 해시태그 이름
+     * @return List<Flower> 꽃 정보
+     */
+    @Query("SELECT f FROM Flower f JOIN f.hashtags h WHERE h.tagName = :tagName")
+    List<Flower> findByHashtag(@Param("tagName") String tagName);
 
 }

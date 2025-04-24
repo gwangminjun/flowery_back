@@ -2,9 +2,12 @@ package com.example.flowery_backend.Service;
 
 import com.example.flowery_backend.Repository.FlowerHashtagJpaRepository;
 import com.example.flowery_backend.model.Entity.FlowerHashtag;
+import com.example.flowery_backend.model.Entity.FlowerHashtagDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FlowerHashtagService {
@@ -28,8 +31,12 @@ public class FlowerHashtagService {
      *
      * @return List<FlowerHashtag> 꽃 해시태그 정보
      */
-    public List<FlowerHashtag> getFlowerHashtag() {
-        return flowerHashtagJpaRepository.findAll();
+    @Transactional
+    public List<FlowerHashtagDto> getFlowerHashtag() {
+        List<FlowerHashtag> flowers = flowerHashtagJpaRepository.findAll();
+        return flowers.stream()
+                .map(FlowerHashtagDto::new)
+                .collect(Collectors.toList());
     }
 
 

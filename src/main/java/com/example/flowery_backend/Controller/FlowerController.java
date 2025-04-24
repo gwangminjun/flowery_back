@@ -39,4 +39,13 @@ public class FlowerController extends CommmonApiService {
                 "해당 꽃이 없습니다."
         );
     }
+
+    @PostMapping("/getFlowerByHashtag")
+    public ResponseEntity<Response> getFlowerByHashtag(@RequestBody FlowerRequest request) {
+        return createResponse(
+                flowerService.getFlowerByHashtag(request.getTagName()),
+                "조회 성공",
+                "해당 꽃이 없습니다."
+        );
+    }
 }

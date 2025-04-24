@@ -2,11 +2,13 @@ package com.example.flowery_backend.Service;
 
 import com.example.flowery_backend.Repository.FlowerJpaRepository;
 import com.example.flowery_backend.model.Entity.Flower;
+import com.example.flowery_backend.model.Entity.FlowerDto;
 import com.example.flowery_backend.model.xml.FlowerResponse;
 import com.example.flowery_backend.model.xml.Result;
 import com.example.flowery_backend.model.xml.Root;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import javax.xml.bind.JAXBContext;
@@ -16,6 +18,7 @@ import java.io.StringReader;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FlowerService {
@@ -31,8 +34,12 @@ public class FlowerService {
      *
      * @param flower 꽃 정보
      */
-    public List<Flower> getFlowers() {
-        return flowerJpaRepository.findAll();
+    @Transactional
+    public List<FlowerDto> getFlowers() {
+        List<Flower> flowers = flowerJpaRepository.findAll();
+        return flowers.stream()
+                .map(FlowerDto::new)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -43,8 +50,17 @@ public class FlowerService {
      * @param fDay   꽃 일
      * @return List<Flower> 꽃 정보
      */
+    @Transactional
     public List<Flower> getFlowerByParams(String flowNm, String fMonth, String fDay) {
         return flowerJpaRepository.searchFlower(flowNm, fMonth, fDay);
+    }
+
+    @Transactional
+    public List<FlowerDto> getFlowerByHashtag(String tagName) {
+        List<Flower> flowers = flowerJpaRepository.findByHashtag(tagName);
+        return flowers.stream()
+                .map(FlowerDto::new)
+                .collect(Collectors.toList());
     }
 
 

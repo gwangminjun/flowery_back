@@ -21,19 +21,23 @@ public class FlowerHashtag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
-    @Column(name = "flower_id", nullable = false)
-    private Long flowerId;
-
     @Column(name = "tag_name", nullable = false)
     private String tagName;
 
-
     @Column(name = "tag_type", nullable = false)
     private String tagType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "flower_id", nullable = false)
+    private Flower flower;  // 🎯 핵심 관계 매핑
+
+
+    public Long getFlowerId() {
+        return flower != null ? flower.getId() : null;
+    }
 }
