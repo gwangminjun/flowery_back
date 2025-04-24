@@ -31,32 +31,12 @@ public class FlowerController extends CommmonApiService {
         );
     }
 
-    @PostMapping("/getFlowerByNm")
-    public ResponseEntity<Response> getFlowerByNm(@RequestBody FlowerRequest request) {
+    @PostMapping("/getFlower")
+    public ResponseEntity<Response> getFlowerByParams(@RequestBody FlowerRequest request) {
         return createResponse(
-                flowerService.getFlowerByNm(request.getFlowNm()),
+                flowerService.getFlowerByParams(request.getFlowNm(), request.getFMonth(), request.getFDay()),
                 "조회 성공",
-                "해당 이름의 꽃이 없습니다."
+                "해당 꽃이 없습니다."
         );
     }
-
-    @PostMapping("/getFlowerByMonth")
-    public ResponseEntity<Response> getFlowerByMonth(@RequestBody FlowerRequest request) {
-        System.out.println(">>> 받은 월: " + request.getFMonth());
-        return createResponse(
-                flowerService.getFlowerByMonth(request.getFMonth()),
-                "조회 성공",
-                "해당 월의 꽃이 없습니다."
-        );
-    }
-
-    @PostMapping("/getFlowerByDay")
-    public ResponseEntity<Response> getFlowerByDay(@RequestBody FlowerRequest request) {
-        return createResponse(
-                flowerService.getFlowerByDay(request.getFDay()),
-                "조회 성공",
-                "해당 일의 꽃이 없습니다."
-        );
-    }
-
 }

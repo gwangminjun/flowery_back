@@ -32,8 +32,8 @@ public class FlowerHashtag {
 
     @Column(name = "tag_name", nullable = false)
     private String tagName;
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "flower_id", referencedColumnName = "id", insertable = false, updatable = false)
-//    private Flower flower;
+
+
+    @Column(name = "tag_type", nullable = false)
+    private String tagType;
 }

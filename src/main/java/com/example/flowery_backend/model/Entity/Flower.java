@@ -90,11 +90,4 @@ public class Flower {
     @Column(name = "f_day")
     private String fDay;
 
-    @XmlElement
-    @Column(name = "f_means")
-    private String fMeans;
-
-    @XmlElement
-    @Column(name = "f_season")
-    private String fSeason;
 }

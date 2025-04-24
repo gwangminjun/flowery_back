@@ -36,34 +36,15 @@ public class FlowerService {
     }
 
     /**
-     * 꽃 정보를 이름 가져오는 메서드입니다.
+     * 꽃 정보를 이름, 월, 일로 조회하는 메서드입니다.
      *
      * @param flowNm 꽃 이름
-     * @return 꽃 정보
-     */
-    public List<Flower> getFlowerByNm(String flowNm) {
-        return flowerJpaRepository.findByFlowNm(flowNm);
-    }
-
-    /**
-     * 꽃 정보를 월 가져오는 메서드입니다.
-     *
      * @param fMonth 꽃 월
-     * @return 꽃 정보
+     * @param fDay   꽃 일
+     * @return List<Flower> 꽃 정보
      */
-    public List<Flower> getFlowerByMonth(String fMonth) {
-        return flowerJpaRepository.findByfMonth(fMonth);
-    }
-
-
-    /**
-     * 꽃 정보를 일 가져오는 메서드입니다.
-     *
-     * @param fDay 꽃 일
-     * @return 꽃 정보
-     */
-    public List<Flower> getFlowerByDay(String fDay) {
-        return flowerJpaRepository.findByfDay(fDay);
+    public List<Flower> getFlowerByParams(String flowNm, String fMonth, String fDay) {
+        return flowerJpaRepository.searchFlower(flowNm, fMonth, fDay);
     }
 
 
