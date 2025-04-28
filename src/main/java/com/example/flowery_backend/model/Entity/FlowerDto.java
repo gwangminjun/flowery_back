@@ -19,6 +19,9 @@ public class FlowerDto {
     private final String fType;
     private final String fMonth;
     private final String fDay;
+    private final String imgUrl1;
+    private final String imgUrl2;
+    private final String imgUrl3;
     private final List<String> hashtags; // Tag name만 반환
 
     // 생성자
@@ -34,6 +37,9 @@ public class FlowerDto {
         this.fType = flower.getFType();
         this.fMonth = flower.getFMonth();
         this.fDay = flower.getFDay();
+        this.imgUrl1 = flower.getImgUrl1();
+        this.imgUrl2 = flower.getImgUrl2();
+        this.imgUrl3 = flower.getImgUrl3();
         this.hashtags = flower.getHashtags().stream()
                 .map(FlowerHashtag::getTagName) // `tagName`만 추출
                 .collect(Collectors.toList());
