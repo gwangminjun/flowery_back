@@ -11,5 +11,5 @@ public class FlowerRequest {
     private String flowNm;
     private String fMonth;
     private String fDay;
-    private String tagName; // 해시태그 이름
+    //private String tagName; // 해시태그 이름
 }
