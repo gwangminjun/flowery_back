@@ -36,7 +36,7 @@ public class FlowerService {
      */
     @Transactional
     public List<FlowerDto> getFlowers() {
-        List<Flower> flowers = flowerJpaRepository.findAll();
+        List<Flower> flowers = flowerJpaRepository.findAllWithHashtags();
         return flowers.stream()
                 .map(FlowerDto::new)
                 .collect(Collectors.toList());

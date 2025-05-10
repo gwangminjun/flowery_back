@@ -40,4 +40,10 @@ public interface FlowerJpaRepository extends JpaRepository<Flower, Long> {
     @Query("SELECT f FROM Flower f JOIN f.hashtags h WHERE h.tagName = :tagName")
     List<Flower> findByHashtag(@Param("tagName") String tagName);
 
+
+    // FlowerJpaRepository.java
+    @Query("SELECT DISTINCT f FROM Flower f LEFT JOIN FETCH f.hashtags")
+    List<Flower> findAllWithHashtags();
+
+
 }
