@@ -8,21 +8,21 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
+@Tag(name = "FlowerHashTag", description = "꽃 해시태그 관련 API")
 @RequestMapping("/api/flowerHashTag")
 @Controller
+@RequiredArgsConstructor
 public class FlowerHashtagController extends CommmonApiService {
     private final FlowerHashtagService flowerHashtagService;
 
-    public FlowerHashtagController(FlowerHashtagService flowerHashtagService) {
-        this.flowerHashtagService = flowerHashtagService;
-    }
 
     @Operation(
             summary = "전체 꽃 해시태그 목록 조회",

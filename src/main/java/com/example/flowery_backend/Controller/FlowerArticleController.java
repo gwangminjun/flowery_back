@@ -1,5 +1,6 @@
 package com.example.flowery_backend.Controller;
 
+import com.example.flowery_backend.Service.CommmonApiService;
 import com.example.flowery_backend.Service.FlowerArticleService;
 import com.example.flowery_backend.model.Entity.FlowerArticle;
 import com.example.flowery_backend.model.request.FlowerArticleFilterRequest;
@@ -17,10 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Tag(name = "Flower Articles", description = "꽃 관련 아티클 API")
-@RestController
 @RequestMapping("/api/article")
+@RestController
 @RequiredArgsConstructor
-public class FlowerArticleController {
+public class FlowerArticleController extends CommmonApiService {
 
     private final FlowerArticleService flowerArticleService;
 
