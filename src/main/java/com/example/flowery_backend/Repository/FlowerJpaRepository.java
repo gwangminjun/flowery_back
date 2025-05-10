@@ -11,39 +11,20 @@ import java.util.List;
 @Repository
 public interface FlowerJpaRepository extends JpaRepository<Flower, Long> {
 
-    /**
-     * 꽃 정보를 이름, 월, 일로 조회하는 메서드입니다.
-     *
-     * @param flowNm 꽃 이름
-     * @param fMonth 꽃 월
-     * @param fDay   꽃 일
-     * @return List<Flower> 꽃 정보
-     */
     @Query("""
-                SELECT f FROM Flower f
-                WHERE (:flowNm IS NULL OR f.flowNm = :flowNm)
-                  AND (:fMonth IS NULL OR f.fMonth = :fMonth)
-                  AND (:fDay IS NULL OR f.fDay = :fDay)
+                SELECT DISTINCT f FROM Flower f
+                LEFT JOIN FETCH f.hashtags h
+                WHERE (:flowNm IS NULL OR :flowNm = '' OR f.flowNm = :flowNm)
+                  AND (:fMonth IS NULL OR :fMonth = '' OR f.fMonth = :fMonth)
+                  AND (:fDay IS NULL OR :fDay = '' OR f.fDay = :fDay)
+                  AND (:tagName IS NULL OR :tagName = '' OR h.tagName = :tagName)
             """)
-    List<Flower> searchFlower(
+    List<Flower> searchFlowerWithFilters(
             @Param("flowNm") String flowNm,
             @Param("fMonth") String fMonth,
-            @Param("fDay") String fDay
+            @Param("fDay") String fDay,
+            @Param("tagName") String tagName
     );
-
-    /**
-     * 해시태그로 꽃 정보를 조회하는 메서드입니다.
-     *
-     * @param tagName 해시태그 이름
-     * @return List<Flower> 꽃 정보
-     */
-    @Query("SELECT f FROM Flower f JOIN f.hashtags h WHERE h.tagName = :tagName")
-    List<Flower> findByHashtag(@Param("tagName") String tagName);
-
-
-    // FlowerJpaRepository.java
-    @Query("SELECT DISTINCT f FROM Flower f LEFT JOIN FETCH f.hashtags")
-    List<Flower> findAllWithHashtags();
 
 
 }

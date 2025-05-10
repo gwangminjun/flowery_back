@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FlowerRequest {
-    private String flowNm;
-    private String fMonth;
-    private String fDay;
-    //private String tagName; // 해시태그 이름
+    private String flowNm; // 꽃 이름
+    private String fMonth; // 꽃의 월
+    private String fDay; // 꽃의 날
+    private String tagName; // 해시태그 이름
 }

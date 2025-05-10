@@ -18,14 +18,14 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) throws JAXBException {
-        model.addAttribute("flowers", flowerService.getFlowers()); // Add the flowers list to the model
+        model.addAttribute("flowers", flowerService.searchFlowersWithFilters(null, null, null, null)); // Add the flowers list to the model
         return "index";
     }
 
     @GetMapping("/sync")
     public String sync(Model model) throws JAXBException {
         flowerService.sync();
-        model.addAttribute("flowers", flowerService.getFlowers()); // Add the flowers list to the model
+        model.addAttribute("flowers", flowerService.searchFlowersWithFilters(null, null, null, null)); // Add the flowers list to the model
         return "index";
     }
 

@@ -18,7 +18,6 @@ import java.io.StringReader;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class FlowerService {
@@ -29,38 +28,20 @@ public class FlowerService {
         this.flowerJpaRepository = flowerJpaRepository;
     }
 
-    /**
-     * 꽃 정보를 가져오는 메서드입니다.
-     *
-     * @param flower 꽃 정보
-     */
-    @Transactional
-    public List<FlowerDto> getFlowers() {
-        List<Flower> flowers = flowerJpaRepository.findAllWithHashtags();
-        return flowers.stream()
+    @Transactional(readOnly = true)
+    public List<FlowerDto> searchFlowersWithFilters(String flowNm, String fMonth, String fDay, String tagName) {
+        return flowerJpaRepository.searchFlowerWithFilters(
+                        emptyToNull(flowNm),
+                        emptyToNull(fMonth),
+                        emptyToNull(fDay),
+                        emptyToNull(tagName)
+                ).stream()
                 .map(FlowerDto::new)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    /**
-     * 꽃 정보를 이름, 월, 일로 조회하는 메서드입니다.
-     *
-     * @param flowNm 꽃 이름
-     * @param fMonth 꽃 월
-     * @param fDay   꽃 일
-     * @return List<Flower> 꽃 정보
-     */
-    @Transactional
-    public List<Flower> getFlowerByParams(String flowNm, String fMonth, String fDay) {
-        return flowerJpaRepository.searchFlower(flowNm, fMonth, fDay);
-    }
-
-    @Transactional
-    public List<FlowerDto> getFlowerByHashtag(String tagName) {
-        List<Flower> flowers = flowerJpaRepository.findByHashtag(tagName);
-        return flowers.stream()
-                .map(FlowerDto::new)
-                .collect(Collectors.toList());
+    private String emptyToNull(String val) {
+        return (val == null || val.trim().isEmpty()) ? null : val;
     }
 
 

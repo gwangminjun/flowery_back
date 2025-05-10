@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,34 +25,8 @@ public class FlowerController extends CommmonApiService {
     }
 
     @Operation(
-            summary = "전체 꽃 목록 조회",
-            description = "시스템에 등록된 모든 꽃 정보를 조회합니다."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "조회 성공",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Response.class))
-            ),
-            @ApiResponse(
-                    responseCode = "204",
-                    description = "꽃이 없습니다.",
-                    content = @Content
-            )
-    })
-    @GetMapping("/getFlowerList")
-    public ResponseEntity<Response> getList() {
-        return createResponse(
-                flowerService.getFlowers(),
-                "조회 성공",
-                "꽃이 없습니다."
-        );
-    }
-
-
-    @Operation(
-            summary = "특정 꽃 정보 조회",
-            description = "꽃 이름, 월, 일을 기준으로 특정 꽃의 정보를 조회합니다."
+            summary = "조건 기반 꽃 정보 조회",
+            description = "꽃 이름(flowNm), 월(fMonth), 일(fDay), 해시태그(tagName) 중 하나 이상으로 조건 검색합니다."
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -63,25 +36,22 @@ public class FlowerController extends CommmonApiService {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "해당 꽃이 없습니다.",
+                    description = "조건에 맞는 꽃이 없습니다.",
                     content = @Content
             )
     })
-    @PostMapping("/getFlower")
-    public ResponseEntity<Response> getFlowerByParams(@RequestBody FlowerRequest request) {
+    @PostMapping("/searchFlowerAdvanced")
+    public ResponseEntity<Response> searchFlowerAdvanced(@RequestBody FlowerRequest request) {
         return createResponse(
-                flowerService.getFlowerByParams(request.getFlowNm(), request.getFMonth(), request.getFDay()),
+                flowerService.searchFlowersWithFilters(
+                        request.getFlowNm(),
+                        request.getFMonth(),
+                        request.getFDay(),
+                        request.getTagName()
+                ),
                 "조회 성공",
-                "해당 꽃이 없습니다."
+                "조건에 맞는 꽃이 없습니다."
         );
     }
 
-//    @PostMapping("/getFlowerByHashtag")
-//    public ResponseEntity<Response> getFlowerByHashtag(@RequestBody FlowerRequest request) {
-//        return createResponse(
-//                flowerService.getFlowerByHashtag(request.getTagName()),
-//                "조회 성공",
-//                "해당 꽃이 없습니다."
-//        );
-//    }
 }
