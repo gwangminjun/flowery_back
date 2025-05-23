@@ -2,6 +2,8 @@ package com.example.flowery_backend.Controller;
 
 import com.example.flowery_backend.Service.CommmonApiService;
 import com.example.flowery_backend.Service.FlowerService;
+import com.example.flowery_backend.model.Entity.FlowerDto;
+import com.example.flowery_backend.model.Entity.FlowerSearchResult;
 import com.example.flowery_backend.model.request.FlowerRequest;
 import com.example.flowery_backend.model.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,6 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Tag(name = "Flower", description = "꽃 관련 API")
 @RequestMapping("/api/flower")
@@ -42,16 +49,35 @@ public class FlowerController extends CommmonApiService {
     })
     @PostMapping("/searchFlowerAdvanced")
     public ResponseEntity<Response> searchFlowerAdvanced(@RequestBody FlowerRequest request) {
-        return createResponse(
-                flowerService.searchFlowersWithFilters(
-                        request.getFlowNm(),
-                        request.getFMonth(),
-                        request.getFDay(),
-                        request.getTagName()
-                ),
-                "조회 성공",
-                "조건에 맞는 꽃이 없습니다."
+
+        List<FlowerDto> flowerDtoList = flowerService.searchFlowersWithFilters(
+                request.getFlowNm(),
+                request.getFMonth(),
+                request.getFDay(),
+                request.getTagName()
         );
+
+        Set<String> tagSet = new HashSet<>();
+        for (FlowerDto dto : flowerDtoList) {
+            List<String> hashtags = dto.getHashtags();
+            if (hashtags != null) {
+                tagSet.addAll(hashtags);
+            }
+        }
+
+        FlowerSearchResult result = new FlowerSearchResult(
+                flowerDtoList,
+                new ArrayList<>(tagSet)
+        );
+
+        Response<FlowerSearchResult> response = new Response<>(
+                "SUCCESS",
+                flowerDtoList.size(),
+                result
+        );
+
+
+        return ResponseEntity.ok(response);
     }
 
 }
