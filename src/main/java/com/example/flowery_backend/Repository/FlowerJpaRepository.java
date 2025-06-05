@@ -14,10 +14,10 @@ public interface FlowerJpaRepository extends JpaRepository<Flower, Long> {
     @Query("""
                 SELECT DISTINCT f FROM Flower f
                 LEFT JOIN FETCH f.hashtags h
-                WHERE (:flowNm IS NULL OR :flowNm = '' OR f.flowNm = :flowNm)
+                WHERE (:flowNm IS NULL OR :flowNm = '' OR f.flowNm LIKE %:flowNm%)
+                  AND (:tagName IS NULL OR :tagName = '' OR h.tagName LIKE %:tagName%)
                   AND (:fMonth IS NULL OR :fMonth = '' OR f.fMonth = :fMonth)
                   AND (:fDay IS NULL OR :fDay = '' OR f.fDay = :fDay)
-                  AND (:tagName IS NULL OR :tagName = '' OR h.tagName = :tagName)
             """)
     List<Flower> searchFlowerWithFilters(
             @Param("flowNm") String flowNm,
