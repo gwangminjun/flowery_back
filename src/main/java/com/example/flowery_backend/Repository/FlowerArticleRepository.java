@@ -10,11 +10,11 @@ import java.util.List;
 public interface FlowerArticleRepository extends JpaRepository<FlowerArticle, Integer> {
 
     @Query("""
-        SELECT a FROM FlowerArticle a
-        WHERE (:title IS NULL OR :title = '' OR a.title = :title)
-          AND (:subTitle IS NULL OR :subTitle = '' OR a.subTitle = :subTitle)
-          AND (:content IS NULL OR :content = '' OR a.content LIKE %:content%)
-    """)
+                SELECT a FROM FlowerArticle a
+                WHERE (:title IS NULL OR :title = '' OR a.title LIKE %:title%)
+                  AND (:subTitle IS NULL OR :subTitle = '' OR a.subTitle LIKE %:subTitle%)
+                  AND (:content IS NULL OR :content = '' OR a.content LIKE %:content%)
+            """)
     List<FlowerArticle> filterByFields(
             @Param("title") String title,
             @Param("subTitle") String subTitle,
